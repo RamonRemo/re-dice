@@ -30,12 +30,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <meta-data
+        <!-- <meta-data
             android:name="dev.fluttercommunity.shake_gesture_android.SHAKE_FORCE"
             android:value="18" />
         <meta-data
             android:name="dev.fluttercommunity.shake_gesture_android.MIN_NUM_SHAKES"
-            android:value="3"/>
+            android:value="3"/> -->
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

@@ -10,9 +10,8 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  shake_gesture: ^1.1.0
-  # shake: ^2.2.0
-  # sensors_plus: ^1.4.1
+  shake_detector: ^0.1.2
+  # shake_gesture: ^1.1.0
 
 dev_dependencies:
   flutter_test:

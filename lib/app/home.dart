@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:shake_detector/shake_detector.dart';
 // import 'package:shake/shake.dart';
-import 'package:shake_gesture/shake_gesture.dart';
+// import 'package:shake_gesture/shake_gesture.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -45,54 +46,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   Widget body() {
-    // ShakeDetector.autoStart(onPhoneShake: _increment);
-
-    // return Center(child: Text('Value: $value'));
-
-    return ShakeGesture(
-      onShake: () {
-        _increment();
-        _shakeController.forward();
-      },
-      child: Center(
-        child: AnimatedBuilder(
-          animation: _shakeAnimation,
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: _shakeAnimation.value * 0.1 * (value % 2 == 0 ? 1 : -1),
-              child: Transform.scale(
-                scale: 1.0 + (_shakeAnimation.value * 0.1),
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow:
-                        _shakeAnimation.value > 0.5
-                            ? [
-                              BoxShadow(
-                                color: Colors.blue.withOpacity(0.3),
-                                blurRadius: 10 * _shakeAnimation.value,
-                                spreadRadius: 5 * _shakeAnimation.value,
-                              ),
-                            ]
-                            : null,
-                  ),
-                  child: Text(
-                    'Value: $value',
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade800,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
-        ),
-      ),
+    return ShakeDetectWrap(
+      enabled: true,
+      onShake: _increment,
+      child: Center(child: Text('Value: $value')),
     );
+
   }
 
   void _increment() {
