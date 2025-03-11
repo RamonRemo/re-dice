@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:re_dice/app/home.dart';
+import 'package:re_dice/app/view/home.dart';
 
 void main() {
   runApp(const MyApp());
