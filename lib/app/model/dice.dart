@@ -22,4 +22,18 @@ extension DiceListExtension on List<Dice> {
     }
     return total;
   }
+
+    Map<int, int> groupByType() {
+    final Map<int, int> diceCount = {};
+    
+    for (var dice in this) {
+      diceCount[dice.sides] = (diceCount[dice.sides] ?? 0) + 1;
+    }
+    
+    // Sort the map by number of sides
+    final sortedEntries = diceCount.entries.toList()
+      ..sort((a, b) => a.key.compareTo(b.key));
+    
+    return Map.fromEntries(sortedEntries);
+  }
 }

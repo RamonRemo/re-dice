@@ -25,6 +25,10 @@ class DiceAnimationController {
   final ArenaController arenaController;
   final Function(void Function()) setState;
 
+  int _animationFrames = 0;
+  final int _maxAnimationFrames = 300; // About 5 seconds at 60fps
+  final double _velocityThreshold = 0.002;
+
   DiceAnimationController({
     required this.diceList,
     required TickerProvider vsync,
@@ -55,6 +59,7 @@ class DiceAnimationController {
   }
 
   void startAnimation() {
+    _animationFrames = 0;
     // Apply random velocities to dice
     for (var pos in dicePositions) {
       pos.dx = (random.nextDouble() * 0.2) - 0.1;
@@ -69,7 +74,19 @@ class DiceAnimationController {
   void _updateDicePositions() {
     if (!animationController.isAnimating) return;
 
+    // Track animation frames
+    _animationFrames++;
+
+    // Force stop after max frames
+    if (_animationFrames >= _maxAnimationFrames) {
+      _stopAnimation();
+      return;
+    }
+
     setState(() {
+      // Check if all dice have low velocity
+      bool allSlow = true;
+
       // Move each die and handle collisions
       for (int i = 0; i < dicePositions.length; i++) {
         var pos = dicePositions[i];
@@ -103,8 +120,14 @@ class DiceAnimationController {
         }
 
         // Simple friction
-        pos.dx *= 0.95;
-        pos.dy *= 0.95;
+        pos.dx *= 0.90;
+        pos.dy *= 0.90;
+
+        // Check if this die is still moving significantly
+        if (pos.dx.abs() > _velocityThreshold ||
+            pos.dy.abs() > _velocityThreshold) {
+          allSlow = false;
+        }
       }
 
       // Collision detection between dice
@@ -130,7 +153,24 @@ class DiceAnimationController {
           }
         }
       }
+
+      // If all dice are moving slowly, stop the animation
+      if (allSlow && _animationFrames > 60) {
+        // Wait at least 1 second
+        _stopAnimation();
+      }
     });
+  }
+
+  void _stopAnimation() {
+    animationController.stop();
+    _animationFrames = 0;
+
+    // Zero out all velocities
+    for (var pos in dicePositions) {
+      pos.dx = 0;
+      pos.dy = 0;
+    }
   }
 
   void dispose() {

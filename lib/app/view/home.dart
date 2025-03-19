@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/model/dice.dart';
+import 'package:re_dice/app/view/dices_modal.dart';
 import 'package:re_dice/app/widget/dice_renderer.dart';
 import 'package:shake_detector/shake_detector.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
@@ -15,14 +16,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   int total = 0;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   // Modelo de dados
-  final List<Dice> _diceList = <Dice>[
-    Dice(id: 1, sides: 6),
-    Dice(id: 2, sides: 6),
-    Dice(id: 3, sides: 6),
-    Dice(id: 4, sides: 6),
-  ];
+  final List<Dice> _diceList = <Dice>[Dice(id: 1, sides: 6)];
+  
 
   // Controllers
   late ArenaController _arenaController;
@@ -61,6 +59,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     _arenaController.updateDimensions(context);
 
     return Scaffold(
+      key: _scaffoldKey,
       body: body(),
       backgroundColor: Colors.black,
     );
@@ -78,27 +77,71 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           // Render dice within arena
           ..._diceRenderer.renderDice(),
 
-          // Roll button
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
               padding: EdgeInsets.only(bottom: 40),
-              child: TextButton(
-                onPressed: _increment,
-                child: Text(
-                  'Roll Dice',
-                  style: TextStyle(fontSize: 30, color: Constants.matrixGreen),
-                ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  TextButton(
+                    onPressed: _increment,
+                    child: Text(
+                      'Roll',
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Constants.matrixGreen,
+                      ),
+                    ),
+                  ),
+                  Text('|'),
+                  TextButton(
+                    onPressed: () {
+                      dicesBottomSheet();
+                    },
+                    child: Text(
+                      'Dices',
+                      style: TextStyle(
+                        fontSize: 30,
+                        color: Constants.matrixGreen,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 60.0),
+            padding: const EdgeInsets.only(top: 40.0),
             child: Align(
               alignment: Alignment.topCenter,
-              child: Text(
-                '$total',
-                style: TextStyle(fontSize: 40, color: Constants.matrixGreen),
+              child: Column(
+                children: [
+                  Text(
+                    '$total',
+                    style: TextStyle(
+                      fontSize: 40,
+                      color: Constants.matrixGreen,
+                    ),
+                  ),
+                  //a list with each dice and his sides
+                  Wrap(
+                    spacing: 10,
+                    children:
+                        _diceList.groupByType().entries.map((entry) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 4),
+                            child: Text(
+                              '${entry.value}d${entry.key}',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Constants.matrixGreen,
+                              ),
+                            ),
+                          );
+                        }).toList(),
+                  ),
+                ],
               ),
             ),
           ),
@@ -116,5 +159,43 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       // Apply random velocities and animate
       _diceAnimController.startAnimation();
     });
+  }
+
+  dicesBottomSheet() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setModalState) {
+            return DiceSelectionModal(
+              diceList: _diceList,
+              onAddDice: (sides) {
+                setState(() {
+                  // Add a new dice with these sides
+                  final newId =
+                      _diceList.isEmpty
+                          ? 1
+                          : _diceList
+                                  .map((d) => d.id)
+                                  .reduce((a, b) => a > b ? a : b) +
+                              1;
+                  _diceList.add(Dice(id: newId, sides: sides));
+                  _diceAnimController.resetDicePositions();
+                });
+                setModalState(() {});
+              },
+              onRemoveDice: (dice) {
+                setState(() {
+                  _diceList.remove(dice);
+                  _diceAnimController.resetDicePositions();
+                });
+                setModalState(() {});
+              },
+            );
+          },
+        );
+      },
+    );
   }
 }

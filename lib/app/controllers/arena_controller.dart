@@ -12,7 +12,7 @@ class ArenaController {
     arenaWidth = MediaQuery.of(context).size.width * 0.9;
     arenaHeight = MediaQuery.of(context).size.height * 0.6;
     arenaLeft = (MediaQuery.of(context).size.width - arenaWidth) / 2;
-    arenaTop = (MediaQuery.of(context).size.height - arenaHeight) / 3;
+    arenaTop = (MediaQuery.of(context).size.height - arenaHeight) / 2.4;
   }
 
   Widget buildArena() {
