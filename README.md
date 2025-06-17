@@ -6,4 +6,4 @@ A dice app.
 
 yep 👆
 not even close to ready yet.
-he doest shake tho.
+he does shake tho.

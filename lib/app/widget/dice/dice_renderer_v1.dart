@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'package:re_dice/app/controllers/dice_animation_controller.dart';
-import 'package:re_dice/app/model/dice.dart';
+import 'package:re_dice/app/models/dice.dart';
 import 'package:re_dice/app/utils/constants.dart';
 import 'dart:math' as math;
 
-class DiceRenderer {
+class DiceRendererv1 {
   final ArenaController arenaController;
   final List<Dice> diceList;
   final DiceAnimationController animationController;
 
-  DiceRenderer({
+  DiceRendererv1({
     required this.arenaController,
     required this.diceList,
     required this.animationController,

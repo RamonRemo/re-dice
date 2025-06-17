@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'dart:math';
-import 'package:re_dice/app/model/dice.dart';
+import 'package:re_dice/app/models/dice.dart';
 
 class DicePosition {
   double x, y; // Position (0-1 range for relative positioning)

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/utils/constants.dart';
-import 'package:dotted_border/dotted_border.dart';
+// import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 
 class ArenaController {
   late double arenaWidth;
@@ -9,8 +10,18 @@ class ArenaController {
   late double arenaTop;
 
   void updateDimensions(BuildContext context) {
-    arenaWidth = MediaQuery.of(context).size.width * 0.9;
-    arenaHeight = MediaQuery.of(context).size.height * 0.6;
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    // Limitar tamanho da arena para web
+    if (kIsWeb) {
+      arenaWidth = (screenWidth * 0.9).clamp(300, 800);
+      arenaHeight = (screenHeight * 0.6).clamp(200, 500);
+    } else {
+      arenaWidth = screenWidth * 0.9;
+      arenaHeight = screenHeight * 0.6;
+    }
+
     arenaLeft = (MediaQuery.of(context).size.width - arenaWidth) / 2;
     arenaTop = (MediaQuery.of(context).size.height - arenaHeight) / 2.4;
   }
@@ -19,18 +30,20 @@ class ArenaController {
     return Positioned(
       left: arenaLeft,
       top: arenaTop,
-      child: DottedBorder(
-        borderType: BorderType.RRect,
-        // radius: Radius.circular(12),
-        color: Constants.matrixGreen,
-        strokeWidth: 6,
-
-        // strokeCap: StrokeCap.round,
-        dashPattern: [3, 18], // Ajuste o padrão dos pontos conforme necessário
-        child: Container(
-          width: arenaWidth,
-          height: arenaHeight,
+      child: Container(
+        width: arenaWidth,
+        height: arenaHeight,
+        decoration: BoxDecoration(
           color: Colors.black,
+          border: Border.all(color: Constants.matrixGreen, width: 3),
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Constants.matrixGreen.withOpacity(0.3),
+              blurRadius: 10,
+              spreadRadius: 2,
+            ),
+          ],
         ),
       ),
     );
