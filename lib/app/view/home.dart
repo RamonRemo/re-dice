@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:re_dice/app/model/dice.dart';
 import 'package:re_dice/app/view/dices_modal.dart';
 import 'package:re_dice/app/widget/dice_renderer.dart';
+import 'package:re_dice/objectbox.g.dart';
 import 'package:shake_detector/shake_detector.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'package:re_dice/app/controllers/dice_animation_controller.dart';
 import 'package:re_dice/app/utils/constants.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final Store store;
+
+  const Home({super.key, required this.store});
 
   @override
   State<Home> createState() => _HomeState();

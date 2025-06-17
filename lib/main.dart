@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:objectbox/objectbox.dart';
+import 'package:re_dice/app/database/store.dart';
 import 'package:re_dice/app/view/home.dart';
 
-void main() {
+late Store store;
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  store = (await ObjectBox.create()).store;
+
+
   runApp(const MyApp());
 }
 
@@ -15,7 +23,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const Home(),
+      home: Home(store: store),
     );
   }
 }

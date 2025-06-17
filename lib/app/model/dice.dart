@@ -1,11 +1,14 @@
 import 'dart:math';
+import 'package:objectbox/objectbox.dart';
 
+@Entity()
 class Dice {
-  final int sides;
-  final int id;
+  @Id()
+  int id;
+  int sides;
   int selectedValue;
 
-  Dice({required this.id, this.sides = 6, this.selectedValue = 1});
+  Dice({this.id = 0, this.sides = 6, this.selectedValue = 1});
 
   int roll() {
     selectedValue = Random().nextInt(sides) + 1;
