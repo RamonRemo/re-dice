@@ -9,7 +9,6 @@ class Dice {
 
   int roll() {
     selectedValue = Random().nextInt(sides) + 1;
-    print('Dice $id rolled: $selectedValue');
     return selectedValue;
   }
 }

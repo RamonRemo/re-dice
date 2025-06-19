@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:re_dice/app/controllers/home_controller.dart';
 import 'package:re_dice/app/models/dice.dart';
-import 'package:re_dice/app/models/visual_theme.dart';
 import 'package:re_dice/app/view/dices_modal.dart';
-import 'package:re_dice/app/factories/renderer_factory.dart';
+import 'package:re_dice/app/view/history_modal.dart';
 import 'package:re_dice/app/factories/arena_factory.dart';
-import 'package:re_dice/app/services/theme_service.dart';
 import 'package:re_dice/app/widget/buttons/bottom_buttons.dart';
 import 'package:re_dice/app/widget/buttons/theme_toggle.dart';
 import 'package:re_dice/app/widget/total_value.dart';
 import 'package:shake_detector/shake_detector.dart';
-import 'package:re_dice/app/controllers/arena_controller.dart';
-import 'package:re_dice/app/controllers/dice_animation_controller.dart';
 import 'package:re_dice/app/utils/constants.dart';
-import 'package:re_dice/app/services/preferences_service.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,126 +18,69 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  int total = 0;
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-
-  // Modelo de dados
-  late List<Dice> _diceList;
-
-  // Controllers
-  late ArenaController _arenaController;
-  late DiceAnimationController _diceAnimController;
-  late dynamic _diceRenderer;
+  late HomeController _controller;
 
   @override
   void initState() {
     super.initState();
-    _loadDiceList();
-    _arenaController = ArenaController();
-    _diceAnimController = DiceAnimationController(
-      diceList: _diceList,
-      vsync: this,
-      arenaController: _arenaController,
-      setState: setState,
-    );
-    _updateRenderer();
+    _controller = HomeController(setState: setState);
+    _controller.initialize(this);
+    _controller.addListener(_onControllerChange);
   }
 
-  void _loadDiceList() {
-    final savedDice = PreferencesService.getDiceList();
-    if (savedDice.isNotEmpty) {
-      _diceList =
-          savedDice
-              .map(
-                (diceMap) => Dice(id: diceMap['id']!, sides: diceMap['sides']!),
-              )
-              .toList();
-    } else {
-      _diceList = [Dice(id: 1, sides: 6)];
-    }
-  }
-
-  void _saveDiceList() {
-    final diceMapList =
-        _diceList.map((dice) => {'id': dice.id, 'sides': dice.sides}).toList();
-    PreferencesService.saveDiceList(diceMapList);
+  void _onControllerChange() {
+    if (mounted) setState(() {});
   }
 
   @override
   void dispose() {
-    _diceAnimController.dispose();
+    _controller.removeListener(_onControllerChange);
+    _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Atualiza dimensões da arena
-    _arenaController.updateDimensions(context);
+    _controller.updateDimensions(context);
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: body(),
-      backgroundColor: Colors.black,
-    );
+    return Scaffold(body: _buildBody(), backgroundColor: Colors.black);
   }
 
-  void _updateRenderer() {
-    _diceRenderer = RendererFactory.createDiceRenderer(
-      arenaController: _arenaController,
-      diceList: _diceList,
-      animationController: _diceAnimController,
-    );
-  }
-
-  void _toggleTheme() {
-    setState(() {
-      ThemeService.toggleTheme();
-      _updateRenderer();
-    });
-  }
-
-  Widget body() {
+  Widget _buildBody() {
     return ShakeDetectWrap(
       enabled: true,
-      onShake: _increment,
+      onShake: _controller.rollDice,
       child: Stack(
         children: [
           ArenaFactory.createArena(
-            left: _arenaController.arenaLeft,
-            top: _arenaController.arenaTop,
-            width: _arenaController.arenaWidth,
-            height: _arenaController.arenaHeight,
+            left: _controller.arenaController.arenaLeft,
+            top: _controller.arenaController.arenaTop,
+            width: _controller.arenaController.arenaWidth,
+            height: _controller.arenaController.arenaHeight,
           ),
-
-          // Render dice within arena
-          ..._diceRenderer.renderDice(),
-
-          // Theme toggle button
+          ..._controller.diceRenderer.renderDice(),
           Positioned(
             top: 40,
             right: 20,
-            child: ThemeToggle(onTap: _toggleTheme),
+            child: ThemeToggle(onTap: _controller.toggleTheme),
           ),
           Align(
             alignment: Alignment.bottomCenter,
             child: BottomButtons(
-              rollFunction: _increment,
-              dicesFunction: dicesBottomSheet,
-              historyFunction: _showHistory,
+              rollFunction: _controller.rollDice,
+              dicesFunction: _showDicesModal,
+              historyFunction: _showHistoryModal,
             ),
           ),
           TotalWidget(
-            total: total.toString(),
+            total: _controller.total.toString(),
             diceList:
-                _diceList.groupByType().entries.map((entry) {
+                _controller.diceList.groupByType().entries.map((entry) {
                   return Container(
                     margin: EdgeInsets.symmetric(horizontal: 4),
                     child: Text(
                       '${entry.value}d${entry.key}',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Constants.matrixGreen,
-                      ),
+                      style: TextStyle(fontSize: 20, color: Constants.primary),
                     ),
                   );
                 }).toList(),
@@ -151,159 +90,28 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
-  void _increment() {
-    setState(() {
-      // Roll the dice
-      total = _diceList.rollAll();
-      print('Dice rolled: $total');
-
-      // Apply random velocities and animate
-      _diceAnimController.startAnimation();
-      final possible = _diceList.map((d) => d.sides).fold(0, (a, b) => a + b);
-      PreferencesService.addRollHistory(total, possible);
-    });
-  }
-
-  void _showHistory() {
-    final history = PreferencesService.getRollHistory();
-    showModalBottomSheet(
+  void _showDicesModal() async {
+    await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (_) {
-        return ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 800, maxHeight: 600),
-          child: Container(
-            padding: EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              border: Border.all(color: Constants.matrixGreen),
-            ),
-            child: SingleChildScrollView(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Theme(
-                  data: Theme.of(
-                    context,
-                  ).copyWith(dividerColor: Constants.matrixGreen),
-                  child: DataTable(
-                    dividerThickness: 1,
-                    columns: [
-                      DataColumn(
-                        label: Text(
-                          'Time',
-                          style: TextStyle(color: Constants.matrixGreen),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Value',
-                          style: TextStyle(color: Constants.matrixGreen),
-                        ),
-                      ),
-                      DataColumn(
-                        label: Text(
-                          'Total',
-                          style: TextStyle(color: Constants.matrixGreen),
-                        ),
-                      ),
-                    ],
-                    rows:
-                        history.reversed.map((record) {
-                          final parts = record.split(':  ');
-                          final time = parts[0];
-                          final values =
-                              parts.length > 1
-                                  ? parts[1].split('  /  ')
-                                  : ['', ''];
-                          return DataRow(
-                            cells: [
-                              DataCell(
-                                Text(
-                                  time,
-                                  style: TextStyle(
-                                    color: Constants.matrixGreen,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  values[0],
-                                  style: TextStyle(
-                                    color: Constants.matrixGreen,
-                                  ),
-                                ),
-                              ),
-                              DataCell(
-                                Text(
-                                  values[1],
-                                  style: TextStyle(
-                                    color: Constants.matrixGreen,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        }).toList(),
-                  ),
-                ),
-              ),
-            ),
+      builder:
+          (context) => DiceSelectionModal(
+            diceList: _controller.diceList,
+            onAddDice: _controller.addDice,
+            onRemoveDice: _controller.removeDice,
+            onReset: () {
+              _controller.resetDiceList();
+              Navigator.pop(context);
+            },
           ),
-        );
-      },
     );
   }
 
-  void _resetDiceList() {
-    setState(() {
-      _diceList.clear();
-      _diceList.add(Dice(id: 1, sides: 6));
-      _diceAnimController.resetDicePositions();
-      _saveDiceList();
-    });
-  }
-
-  dicesBottomSheet() {
+  void _showHistoryModal() {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setModalState) {
-            return DiceSelectionModal(
-              diceList: _diceList,
-              onAddDice: (sides) {
-                setState(() {
-                  final newId =
-                      _diceList.isEmpty
-                          ? 1
-                          : _diceList
-                                  .map((d) => d.id)
-                                  .reduce((a, b) => a > b ? a : b) +
-                              1;
-                  _diceList.add(Dice(id: newId, sides: sides));
-                  _diceAnimController.resetDicePositions();
-                  _saveDiceList();
-                });
-                setModalState(() {});
-              },
-              onRemoveDice: (dice) {
-                setState(() {
-                  _diceList.remove(dice);
-                  _diceAnimController.resetDicePositions();
-                  _saveDiceList();
-                });
-                setModalState(() {});
-              },
-              onReset: () {
-                _resetDiceList();
-                setModalState(() {});
-                Navigator.pop(context);
-              },
-            );
-          },
-        );
-      },
+      builder: (context) => const HistoryModal(),
     );
   }
 }

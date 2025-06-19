@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/services/preferences_service.dart';
-import 'package:re_dice/app/utils/constants.dart';
 import 'package:re_dice/app/view/home.dart';
 
 Future<void> main() async {

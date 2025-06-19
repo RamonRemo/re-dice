@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/models/dice.dart';
 import 'package:re_dice/app/utils/constants.dart';
@@ -46,9 +48,9 @@ class DiceSelectionModal extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border(
-          top: BorderSide(color: Constants.matrixGreen, width: 2),
-          left: BorderSide(color: Constants.matrixGreen, width: 2),
-          right: BorderSide(color: Constants.matrixGreen, width: 2),
+          top: BorderSide(color: Constants.primary, width: 2),
+          left: BorderSide(color: Constants.primary, width: 2),
+          right: BorderSide(color: Constants.primary, width: 2),
         ),
       ),
       child: SingleChildScrollView(
@@ -61,16 +63,12 @@ class DiceSelectionModal extends StatelessWidget {
                 Spacer(),
                 Text(
                   'Dice Selection',
-                  style: TextStyle(color: Constants.matrixGreen, fontSize: 30),
+                  style: TextStyle(color: Constants.primary, fontSize: 30),
                 ),
                 Spacer(),
                 IconButton(
                   onPressed: onReset,
-                  icon: Icon(
-                    Icons.refresh,
-                    color: Constants.matrixGreen,
-                    size: 24,
-                  ),
+                  icon: Icon(Icons.refresh, color: Constants.primary, size: 24),
                 ),
               ],
             ),
@@ -83,7 +81,7 @@ class DiceSelectionModal extends StatelessWidget {
             if (existingDiceTypes.isNotEmpty) ...[
               Text(
                 'Current Dice',
-                style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+                style: TextStyle(color: Constants.primary, fontSize: 18),
               ),
               SizedBox(height: 10),
               Wrap(
@@ -111,13 +109,13 @@ class DiceSelectionModal extends StatelessWidget {
               if (nonExistingDiceTypes.isNotEmpty) ...[
                 SizedBox(height: 16),
                 Divider(
-                  color: Constants.matrixGreen.withOpacity(0.5),
+                  color: Constants.primary.withOpacity(0.5),
                   thickness: 1,
                 ),
                 SizedBox(height: 16),
                 Text(
                   'Available Dice',
-                  style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+                  style: TextStyle(color: Constants.primary, fontSize: 18),
                 ),
                 SizedBox(height: 10),
               ],

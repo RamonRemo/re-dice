@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/utils/constants.dart';
 
@@ -21,7 +20,7 @@ class DiceChip extends StatelessWidget {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       decoration: BoxDecoration(
-        border: Border.all(color: Constants.matrixGreen),
+        border: Border.all(color: Constants.primary),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -34,7 +33,7 @@ class DiceChip extends StatelessWidget {
               child: Text(
                 ' - ',
                 style: TextStyle(
-                  color: Constants.matrixGreen,
+                  color: Constants.primary,
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
@@ -46,7 +45,7 @@ class DiceChip extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               count > 0 ? '$count d$sides' : 'd$sides',
-              style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+              style: TextStyle(color: Constants.primary, fontSize: 18),
             ),
           ),
 
@@ -56,7 +55,7 @@ class DiceChip extends StatelessWidget {
             child: Text(
               ' + ',
               style: TextStyle(
-                color: Constants.matrixGreen,
+                color: Constants.primary,
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),

@@ -16,14 +16,14 @@ class ThemeToggle extends StatelessWidget {
         height: 25,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          border: Border.all(color: Constants.matrixGreen, width: 2),
+          border: Border.all(color: Constants.primary, width: 2),
           color: Colors.black,
         ),
         child: Center(
           child: Text(
             ThemeService.currentTheme == VisualTheme.modern ? 'v1' : 'v0',
             style: TextStyle(
-              color: Constants.matrixGreen,
+              color: Constants.primary,
               fontSize: 8,
               fontWeight: FontWeight.bold,
             ),

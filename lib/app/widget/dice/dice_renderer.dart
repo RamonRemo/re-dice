@@ -3,7 +3,6 @@ import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'package:re_dice/app/controllers/dice_animation_controller.dart';
 import 'package:re_dice/app/models/dice.dart';
 import 'package:re_dice/app/utils/constants.dart';
-import 'dart:math' as math;
 
 class DiceRenderer {
   final ArenaController arenaController;
@@ -22,7 +21,7 @@ class DiceRenderer {
       width: 60,
       height: 60,
       decoration: BoxDecoration(
-        border: Border.all(color: Constants.matrixGreen, width: 2),
+        border: Border.all(color: Constants.primary, width: 2),
         borderRadius: BorderRadius.circular(8),
         color: Colors.black,
       ),
@@ -33,7 +32,7 @@ class DiceRenderer {
                 : Text(
                   '$value',
                   style: TextStyle(
-                    color: Constants.matrixGreen,
+                    color: Constants.primary,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
@@ -51,7 +50,7 @@ class DiceRenderer {
         return Container(
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: showDot ? Constants.matrixGreen : Colors.transparent,
+            color: showDot ? Constants.primary : Colors.transparent,
           ),
           width: 8,
           height: 8,

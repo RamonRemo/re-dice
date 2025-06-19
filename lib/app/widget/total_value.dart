@@ -17,7 +17,7 @@ class TotalWidget extends StatelessWidget {
           children: [
             Text(
               total,
-              style: TextStyle(fontSize: 40, color: Constants.matrixGreen),
+              style: TextStyle(fontSize: 40, color: Constants.primary),
             ),
             _DiceList(diceList: diceList),
           ],
@@ -29,7 +29,7 @@ class TotalWidget extends StatelessWidget {
 
 class _DiceList extends StatelessWidget {
   final List<Widget> diceList;
-  const _DiceList({super.key, required this.diceList});
+  const _DiceList({required this.diceList});
 
   @override
   Widget build(BuildContext context) {

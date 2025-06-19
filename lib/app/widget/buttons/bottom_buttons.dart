@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:re_dice/app/utils/constants.dart';
 import 'package:re_dice/app/widget/buttons/matrix_button.dart';
 
 class BottomButtons extends StatelessWidget {
@@ -22,9 +21,9 @@ class BottomButtons extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           MatrixButton(onPressed: rollFunction, label: 'Roll'),
-          Text('|'),
+          MatrixButton(label: '|'),
           MatrixButton(onPressed: dicesFunction, label: 'Dices'),
-          Text('|'),
+          MatrixButton(label: '|'),
           MatrixButton(onPressed: historyFunction, label: 'History'),
         ],
       ),

@@ -23,9 +23,9 @@ class ArenaV1 extends StatelessWidget {
       top: top,
       child: DottedBorder(
         borderType: BorderType.RRect,
-        color: Constants.matrixGreen,
+        color: Constants.primary,
         strokeWidth: 6,
-        dashPattern: [3, 18], 
+        dashPattern: [3, 18],
         child: Container(width: width, height: height, color: Colors.black),
       ),
     );

@@ -109,7 +109,7 @@ class DiceRendererv1 {
             style: TextStyle(
               fontFamily: 'Courier', // Monospace font for proper alignment
               fontSize: fontSize, // Use the dynamic font size
-              color: Constants.matrixGreen,
+              color: Constants.primary,
               fontWeight: FontWeight.bold,
             ),
           ),

@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:re_dice/app/utils/constants.dart';
 
@@ -25,11 +27,11 @@ class Arena extends StatelessWidget {
         height: height,
         decoration: BoxDecoration(
           color: Colors.black,
-          border: Border.all(color: Constants.matrixGreen, width: 3),
+          border: Border.all(color: Constants.primary, width: 3),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Constants.matrixGreen.withOpacity(0.3),
+              color: Constants.primary.withOpacity(0.3),
               blurRadius: 10,
               spreadRadius: 2,
             ),

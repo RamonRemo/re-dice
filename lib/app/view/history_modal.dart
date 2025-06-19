@@ -15,15 +15,13 @@ class HistoryModal extends StatelessWidget {
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.black,
-          border: Border.all(color: Constants.matrixGreen),
+          border: Border.all(color: Constants.primary),
         ),
         child: SingleChildScrollView(
           child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Theme(
-              data: Theme.of(
-                context,
-              ).copyWith(dividerColor: Constants.matrixGreen),
+              data: Theme.of(context).copyWith(dividerColor: Constants.primary),
               child: DataTable(
                 dividerThickness: 1,
                 columns: _buildColumns(),
@@ -39,7 +37,7 @@ class HistoryModal extends StatelessWidget {
   List<DataColumn> _buildColumns() {
     return ['Time', 'Value', 'Total'].map((title) {
       return DataColumn(
-        label: Text(title, style: TextStyle(color: Constants.matrixGreen)),
+        label: Text(title, style: TextStyle(color: Constants.primary)),
       );
     }).toList();
   }
@@ -52,13 +50,9 @@ class HistoryModal extends StatelessWidget {
 
       return DataRow(
         cells: [
-          DataCell(Text(time, style: TextStyle(color: Constants.matrixGreen))),
-          DataCell(
-            Text(values[0], style: TextStyle(color: Constants.matrixGreen)),
-          ),
-          DataCell(
-            Text(values[1], style: TextStyle(color: Constants.matrixGreen)),
-          ),
+          DataCell(Text(time, style: TextStyle(color: Constants.primary))),
+          DataCell(Text(values[0], style: TextStyle(color: Constants.primary))),
+          DataCell(Text(values[1], style: TextStyle(color: Constants.primary))),
         ],
       );
     }).toList();

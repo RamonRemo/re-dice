@@ -13,7 +13,7 @@ class MatrixButton extends StatelessWidget {
       onPressed: onPressed,
       child: Text(
         label ?? '',
-        style: TextStyle(fontSize: 30, color: Constants.matrixGreen),
+        style: TextStyle(fontSize: 30, color: Constants.primary),
       ),
     );
   }
