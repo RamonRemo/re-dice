@@ -43,7 +43,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     _controller.updateDimensions(context);
 
-    return Scaffold(body: _buildBody(), backgroundColor: Colors.black);
+    return Scaffold(
+      body: _buildBody(),
+      backgroundColor: Constants.backgroundColor,
+    );
   }
 
   Widget _buildBody() {

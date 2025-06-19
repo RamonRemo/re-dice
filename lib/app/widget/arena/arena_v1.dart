@@ -26,7 +26,7 @@ class ArenaV1 extends StatelessWidget {
         color: Constants.primary,
         strokeWidth: 6,
         dashPattern: [3, 18],
-        child: Container(width: width, height: height, color: Colors.black),
+        child: Container(width: width, height: height, color: Constants.arenaColor),
       ),
     );
   }

@@ -23,7 +23,7 @@ class DiceRenderer {
       decoration: BoxDecoration(
         border: Border.all(color: Constants.primary, width: 2),
         borderRadius: BorderRadius.circular(8),
-        color: Colors.black,
+        // color: Colors.white,
       ),
       child: Center(
         child:

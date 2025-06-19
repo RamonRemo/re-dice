@@ -46,7 +46,7 @@ class DiceSelectionModal extends StatelessWidget {
         maxHeight: MediaQuery.of(context).size.height * 0.8,
       ),
       decoration: BoxDecoration(
-        color: Colors.black,
+        // color: Colors.black,
         border: Border(
           top: BorderSide(color: Constants.primary, width: 2),
           left: BorderSide(color: Constants.primary, width: 2),

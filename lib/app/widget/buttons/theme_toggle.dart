@@ -17,7 +17,7 @@ class ThemeToggle extends StatelessWidget {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           border: Border.all(color: Constants.primary, width: 2),
-          color: Colors.black,
+          color: Constants.backgroundColor,
         ),
         child: Center(
           child: Text(

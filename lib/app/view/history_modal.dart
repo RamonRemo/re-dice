@@ -14,7 +14,7 @@ class HistoryModal extends StatelessWidget {
       child: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Constants.backgroundColor,
           border: Border.all(color: Constants.primary),
         ),
         child: SingleChildScrollView(
