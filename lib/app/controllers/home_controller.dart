@@ -3,8 +3,8 @@ import 'package:re_dice/app/models/dice.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'package:re_dice/app/controllers/dice_animation_controller.dart';
 import 'package:re_dice/app/services/preferences_service.dart';
-import 'package:re_dice/app/services/theme_service.dart';
 import 'package:re_dice/app/factories/renderer_factory.dart';
+import 'package:re_dice/app/utils/constants.dart';
 
 class HomeController extends ChangeNotifier {
   // Estado
@@ -81,9 +81,9 @@ class HomeController extends ChangeNotifier {
   }
 
   void toggleTheme() {
-    ThemeService.toggleTheme();
-    _updateRenderer();
-    notifyListeners();
+    setState(() {
+      Constants.updateColor(); // Atualiza a cor no Constants
+    });
   }
 
   void addDice(int sides) {

@@ -26,7 +26,7 @@ class Arena extends StatelessWidget {
         width: width,
         height: height,
         decoration: BoxDecoration(
-          color: Constants.arenaColor,
+          color: Constants.background,
           border: Border.all(color: Constants.primary, width: 3),
           borderRadius: BorderRadius.circular(12),
           boxShadow: [

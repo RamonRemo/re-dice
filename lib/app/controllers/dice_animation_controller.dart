@@ -71,6 +71,19 @@ class DiceAnimationController {
     animationController.repeat();
   }
 
+  // Método para calcular o tamanho relativo dos dados com base na quantidade
+  double calculateRelativeDiceSize() {
+    const double baseSize = 64.0; // Tamanho base em pixels
+    if (diceList.length <= 5) {
+      return baseSize;
+    } else {
+      double newSize =
+          baseSize -
+          ((diceList.length - 5) * 3.0); // Reduz tamanho mais suavemente
+      return max(newSize, 40.0); // Tamanho mínimo ajustado
+    }
+  }
+
   void _updateDicePositions() {
     if (!animationController.isAnimating) return;
 
@@ -88,6 +101,10 @@ class DiceAnimationController {
       bool allSlow = true;
 
       // Move each die and handle collisions
+      double diceSizePixels = calculateRelativeDiceSize();
+      double diceRelativeWidth = diceSizePixels / arenaController.arenaWidth;
+      double diceRelativeHeight = diceSizePixels / arenaController.arenaHeight;
+
       for (int i = 0; i < dicePositions.length; i++) {
         var pos = dicePositions[i];
 
@@ -95,12 +112,6 @@ class DiceAnimationController {
         pos.x += pos.dx;
         pos.y += pos.dy;
         pos.rotation += (pos.dx + pos.dy) / 5;
-
-        // Better measurement of dice size
-        double diceSizePixels = 64;
-        double diceRelativeWidth = diceSizePixels / arenaController.arenaWidth;
-        double diceRelativeHeight =
-            diceSizePixels / arenaController.arenaHeight;
 
         // Bounds should be 0.0 to 1.0 for the dice's center point
         if (pos.x < 0.0) {
@@ -140,8 +151,11 @@ class DiceAnimationController {
           double dy = pos1.y - pos2.y;
           double distance = sqrt(dx * dx + dy * dy);
 
+          // Ajustar distância mínima com base no tamanho dos dados
+          double minDistance = diceRelativeWidth * 1.5;
+
           // If dice are too close, make them bounce off each other
-          if (distance < 0.15) {
+          if (distance < minDistance) {
             // Calculate collision response
             double angle = atan2(dy, dx);
             double magnitude = 0.02;

@@ -51,7 +51,7 @@ class _DiceSelectionModalState extends State<DiceSelectionModal> {
         maxHeight: MediaQuery.of(context).size.height * 0.8,
       ),
       decoration: BoxDecoration(
-        color: Constants.backgroundColor,
+        color: Constants.background,
         border: Border(
           top: BorderSide(color: Constants.primary, width: 2),
           left: BorderSide(color: Constants.primary, width: 2),

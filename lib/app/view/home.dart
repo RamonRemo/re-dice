@@ -43,10 +43,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     _controller.updateDimensions(context);
 
-    return Scaffold(
-      body: _buildBody(),
-      backgroundColor: Constants.backgroundColor,
-    );
+    return Scaffold(body: _buildBody(), backgroundColor: Constants.background);
   }
 
   Widget _buildBody() {
@@ -98,24 +95,26 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
-      builder: (context) => StatefulBuilder(
-        builder: (context, setModalState) => DiceSelectionModal(
-          diceList: _controller.diceList,
-          onAddDice: (sides) {
-            _controller.addDice(sides);
-            setModalState(() {}); // Força reconstrução do modal
-          },
-          onRemoveDice: (dice) {
-            _controller.removeDice(dice);
-            setModalState(() {}); // Força reconstrução do modal
-          },
-          onReset: () {
-            _controller.resetDiceList();
-            setModalState(() {}); // Força reconstrução do modal
-            Navigator.pop(context);
-          },
-        ),
-      ),
+      builder:
+          (context) => StatefulBuilder(
+            builder:
+                (context, setModalState) => DiceSelectionModal(
+                  diceList: _controller.diceList,
+                  onAddDice: (sides) {
+                    _controller.addDice(sides);
+                    setModalState(() {}); // Força reconstrução do modal
+                  },
+                  onRemoveDice: (dice) {
+                    _controller.removeDice(dice);
+                    setModalState(() {}); // Força reconstrução do modal
+                  },
+                  onReset: () {
+                    _controller.resetDiceList();
+                    setModalState(() {}); // Força reconstrução do modal
+                    Navigator.pop(context);
+                  },
+                ),
+          ),
     );
   }
 
