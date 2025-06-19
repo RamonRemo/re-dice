@@ -5,7 +5,7 @@ import 'package:re_dice/app/models/dice.dart';
 import 'package:re_dice/app/utils/constants.dart';
 import 'package:re_dice/app/widget/dice_chip.dart';
 
-class DiceSelectionModal extends StatelessWidget {
+class DiceSelectionModal extends StatefulWidget {
   final List<Dice> diceList;
   final Function(int sides) onAddDice;
   final Function(Dice dice) onRemoveDice;
@@ -20,12 +20,17 @@ class DiceSelectionModal extends StatelessWidget {
   });
 
   @override
+  State<DiceSelectionModal> createState() => _DiceSelectionModalState();
+}
+
+class _DiceSelectionModalState extends State<DiceSelectionModal> {
+  @override
   Widget build(BuildContext context) {
     // List of all available dice types
     final List<int> availableDiceTypes = [4, 6, 8, 10, 12, 16, 20, 24, 100];
 
     // Get current dice counts grouped by sides
-    final Map<int, int> diceGroups = diceList.groupByType();
+    final Map<int, int> diceGroups = widget.diceList.groupByType();
 
     // Split dice into existing and non-existing groups
     final List<int> existingDiceTypes = [];
@@ -46,7 +51,7 @@ class DiceSelectionModal extends StatelessWidget {
         maxHeight: MediaQuery.of(context).size.height * 0.8,
       ),
       decoration: BoxDecoration(
-        // color: Colors.black,
+        color: Constants.backgroundColor,
         border: Border(
           top: BorderSide(color: Constants.primary, width: 2),
           left: BorderSide(color: Constants.primary, width: 2),
@@ -67,7 +72,10 @@ class DiceSelectionModal extends StatelessWidget {
                 ),
                 Spacer(),
                 IconButton(
-                  onPressed: onReset,
+                  onPressed: () {
+                    widget.onReset();
+                    setState(() {}); // Força atualização local se necessário
+                  },
                   icon: Icon(Icons.refresh, color: Constants.primary, size: 24),
                 ),
               ],
@@ -94,12 +102,16 @@ class DiceSelectionModal extends StatelessWidget {
                       return DiceChip(
                         count: count,
                         onRemoveDice: () {
-                          final diceToRemove = diceList.lastWhere(
+                          final diceToRemove = widget.diceList.lastWhere(
                             (d) => d.sides == sides,
                           );
-                          onRemoveDice(diceToRemove);
+                          widget.onRemoveDice(diceToRemove);
+                          setState(() {}); // Atualiza o modal
                         },
-                        onAddDice: (sides) => onAddDice(sides),
+                        onAddDice: (sides) {
+                          widget.onAddDice(sides);
+                          setState(() {}); // Atualiza o modal
+                        },
                         sides: sides,
                       );
                     }).toList(),
@@ -131,7 +143,10 @@ class DiceSelectionModal extends StatelessWidget {
                     return DiceChip(
                       count: 0,
                       onRemoveDice: () {},
-                      onAddDice: (sides) => onAddDice(sides),
+                      onAddDice: (sides) {
+                        widget.onAddDice(sides);
+                        setState(() {}); // Atualiza o modal
+                      },
                       sides: sides,
                     );
                   }).toList(),

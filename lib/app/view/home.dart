@@ -97,16 +97,25 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     await showModalBottomSheet<String>(
       context: context,
       backgroundColor: Colors.transparent,
-      builder:
-          (context) => DiceSelectionModal(
-            diceList: _controller.diceList,
-            onAddDice: _controller.addDice,
-            onRemoveDice: _controller.removeDice,
-            onReset: () {
-              _controller.resetDiceList();
-              Navigator.pop(context);
-            },
-          ),
+      isScrollControlled: true,
+      builder: (context) => StatefulBuilder(
+        builder: (context, setModalState) => DiceSelectionModal(
+          diceList: _controller.diceList,
+          onAddDice: (sides) {
+            _controller.addDice(sides);
+            setModalState(() {}); // Força reconstrução do modal
+          },
+          onRemoveDice: (dice) {
+            _controller.removeDice(dice);
+            setModalState(() {}); // Força reconstrução do modal
+          },
+          onReset: () {
+            _controller.resetDiceList();
+            setModalState(() {}); // Força reconstrução do modal
+            Navigator.pop(context);
+          },
+        ),
+      ),
     );
   }
 
