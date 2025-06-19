@@ -5,6 +5,9 @@ import 'package:re_dice/app/view/dices_modal.dart';
 import 'package:re_dice/app/factories/renderer_factory.dart';
 import 'package:re_dice/app/factories/arena_factory.dart';
 import 'package:re_dice/app/services/theme_service.dart';
+import 'package:re_dice/app/widget/buttons/bottom_buttons.dart';
+import 'package:re_dice/app/widget/buttons/theme_toggle.dart';
+import 'package:re_dice/app/widget/total_value.dart';
 import 'package:shake_detector/shake_detector.dart';
 import 'package:re_dice/app/controllers/arena_controller.dart';
 import 'package:re_dice/app/controllers/dice_animation_controller.dart';
@@ -104,10 +107,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       child: Stack(
         children: [
           ArenaFactory.createArena(
-            arenaLeft: _arenaController.arenaLeft,
-            arenaTop: _arenaController.arenaTop,
-            arenaWidth: _arenaController.arenaWidth,
-            arenaHeight: _arenaController.arenaHeight,
+            left: _arenaController.arenaLeft,
+            top: _arenaController.arenaTop,
+            width: _arenaController.arenaWidth,
+            height: _arenaController.arenaHeight,
           ),
 
           // Render dice within arena
@@ -117,110 +120,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           Positioned(
             top: 40,
             right: 20,
-            child: GestureDetector(
-              onTap: _toggleTheme,
-              child: Container(
-                width: 25,
-                height: 25,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: Constants.matrixGreen, width: 2),
-                  color: Colors.black,
-                ),
-                child: Center(
-                  child: Text(
-                    ThemeService.currentTheme == VisualTheme.modern
-                        ? 'v1'
-                        : 'v0',
-                    style: TextStyle(
-                      color: Constants.matrixGreen,
-                      fontSize: 8,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            child: ThemeToggle(onTap: _toggleTheme),
           ),
-
           Align(
             alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: 40),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  TextButton(
-                    onPressed: _increment,
-                    child: Text(
-                      'Roll',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Constants.matrixGreen,
-                      ),
-                    ),
-                  ),
-                  Text('|'),
-                  TextButton(
-                    onPressed: () {
-                      dicesBottomSheet();
-                    },
-                    child: Text(
-                      'Dices',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Constants.matrixGreen,
-                      ),
-                    ),
-                  ),
-                  Text('|'),
-                  TextButton(
-                    onPressed: _showHistory,
-                    child: Text(
-                      'History',
-                      style: TextStyle(
-                        fontSize: 30,
-                        color: Constants.matrixGreen,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+            child: BottomButtons(
+              rollFunction: _increment,
+              dicesFunction: dicesBottomSheet,
+              historyFunction: _showHistory,
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 40.0),
-            child: Align(
-              alignment: Alignment.topCenter,
-              child: Column(
-                children: [
-                  Text(
-                    '$total',
-                    style: TextStyle(
-                      fontSize: 40,
-                      color: Constants.matrixGreen,
+          TotalWidget(
+            total: total.toString(),
+            diceList:
+                _diceList.groupByType().entries.map((entry) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 4),
+                    child: Text(
+                      '${entry.value}d${entry.key}',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Constants.matrixGreen,
+                      ),
                     ),
-                  ),
-                  //a list with each dice and his sides
-                  Wrap(
-                    spacing: 10,
-                    children:
-                        _diceList.groupByType().entries.map((entry) {
-                          return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 4),
-                            child: Text(
-                              '${entry.value}d${entry.key}',
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Constants.matrixGreen,
-                              ),
-                            ),
-                          );
-                        }).toList(),
-                  ),
-                ],
-              ),
-            ),
+                  );
+                }).toList(),
           ),
         ],
       ),

@@ -40,6 +40,9 @@ class DiceSelectionModal extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16),
       width: double.infinity,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.8,
+      ),
       decoration: BoxDecoration(
         color: Colors.black,
         border: Border(
@@ -48,94 +51,96 @@ class DiceSelectionModal extends StatelessWidget {
           right: BorderSide(color: Constants.matrixGreen, width: 2),
         ),
       ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Spacer(),
-              Text(
-                'Dice Selection',
-                style: TextStyle(color: Constants.matrixGreen, fontSize: 30),
-              ),
-              Spacer(),
-              IconButton(
-                onPressed: onReset,
-                icon: Icon(
-                  Icons.refresh,
-                  color: Constants.matrixGreen,
-                  size: 24,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Spacer(),
+                Text(
+                  'Dice Selection',
+                  style: TextStyle(color: Constants.matrixGreen, fontSize: 30),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(height: 20),
-
-          // Reset button
-          SizedBox(height: 20),
-
-          // Existing dice section (only show if there are any)
-          if (existingDiceTypes.isNotEmpty) ...[
-            Text(
-              'Current Dice',
-              style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+                Spacer(),
+                IconButton(
+                  onPressed: onReset,
+                  icon: Icon(
+                    Icons.refresh,
+                    color: Constants.matrixGreen,
+                    size: 24,
+                  ),
+                ),
+              ],
             ),
-            SizedBox(height: 10),
+            SizedBox(height: 20),
+
+            // Reset button
+            SizedBox(height: 20),
+
+            // Existing dice section (only show if there are any)
+            if (existingDiceTypes.isNotEmpty) ...[
+              Text(
+                'Current Dice',
+                style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+              ),
+              SizedBox(height: 10),
+              Wrap(
+                spacing: 12,
+                runSpacing: 16,
+                alignment: WrapAlignment.center,
+                children:
+                    existingDiceTypes.map((sides) {
+                      final count = diceGroups[sides] ?? 0;
+                      return DiceChip(
+                        count: count,
+                        onRemoveDice: () {
+                          final diceToRemove = diceList.lastWhere(
+                            (d) => d.sides == sides,
+                          );
+                          onRemoveDice(diceToRemove);
+                        },
+                        onAddDice: (sides) => onAddDice(sides),
+                        sides: sides,
+                      );
+                    }).toList(),
+              ),
+
+              // Divider between sections
+              if (nonExistingDiceTypes.isNotEmpty) ...[
+                SizedBox(height: 16),
+                Divider(
+                  color: Constants.matrixGreen.withOpacity(0.5),
+                  thickness: 1,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Available Dice',
+                  style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
+                ),
+                SizedBox(height: 10),
+              ],
+            ],
+
+            // Non-existing dice section
             Wrap(
               spacing: 12,
               runSpacing: 16,
               alignment: WrapAlignment.center,
               children:
-                  existingDiceTypes.map((sides) {
-                    final count = diceGroups[sides] ?? 0;
+                  nonExistingDiceTypes.map((sides) {
                     return DiceChip(
-                      count: count,
-                      onRemoveDice: () {
-                        final diceToRemove = diceList.lastWhere(
-                          (d) => d.sides == sides,
-                        );
-                        onRemoveDice(diceToRemove);
-                      },
+                      count: 0,
+                      onRemoveDice: () {},
                       onAddDice: (sides) => onAddDice(sides),
                       sides: sides,
                     );
                   }).toList(),
             ),
-
-            // Divider between sections
-            if (nonExistingDiceTypes.isNotEmpty) ...[
-              SizedBox(height: 16),
-              Divider(
-                color: Constants.matrixGreen.withOpacity(0.5),
-                thickness: 1,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Available Dice',
-                style: TextStyle(color: Constants.matrixGreen, fontSize: 18),
-              ),
-              SizedBox(height: 10),
-            ],
+            SizedBox(height: 30),
           ],
-
-          // Non-existing dice section
-          Wrap(
-            spacing: 12,
-            runSpacing: 16,
-            alignment: WrapAlignment.center,
-            children:
-                nonExistingDiceTypes.map((sides) {
-                  return DiceChip(
-                    count: 0,
-                    onRemoveDice: () {},
-                    onAddDice: (sides) => onAddDice(sides),
-                    sides: sides,
-                  );
-                }).toList(),
-          ),
-          SizedBox(height: 30),
-        ],
+        ),
       ),
     );
   }

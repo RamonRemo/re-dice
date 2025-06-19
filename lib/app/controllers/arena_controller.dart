@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:re_dice/app/utils/constants.dart';
-// import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/foundation.dart';
 
 class ArenaController {
@@ -22,30 +20,15 @@ class ArenaController {
       arenaHeight = screenHeight * 0.6;
     }
 
-    arenaLeft = (MediaQuery.of(context).size.width - arenaWidth) / 2;
-    arenaTop = (MediaQuery.of(context).size.height - arenaHeight) / 2.4;
+    arenaLeft = (screenWidth - arenaWidth) / 2;
+    arenaTop = (screenHeight - arenaHeight) / 2.4;
   }
 
-  Widget buildArena() {
-    return Positioned(
-      left: arenaLeft,
-      top: arenaTop,
-      child: Container(
-        width: arenaWidth,
-        height: arenaHeight,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          border: Border.all(color: Constants.matrixGreen, width: 3),
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Constants.matrixGreen.withOpacity(0.3),
-              blurRadius: 10,
-              spreadRadius: 2,
-            ),
-          ],
-        ),
-      ),
-    );
+  // Métodos helper para lógica da arena
+  bool isInsideArena(double x, double y) {
+    return x >= arenaLeft &&
+        x <= arenaLeft + arenaWidth &&
+        y >= arenaTop &&
+        y <= arenaTop + arenaHeight;
   }
 }

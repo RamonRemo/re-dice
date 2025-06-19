@@ -2,27 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:re_dice/app/utils/constants.dart';
 
 class Arena extends StatelessWidget {
-  final double arenaLeft;
-  final double arenaTop;
-  final double arenaWidth;
-  final double arenaHeight;
+  final double left;
+  final double top;
+  final double width;
+  final double height;
 
   const Arena({
     super.key,
-    required this.arenaLeft,
-    required this.arenaTop,
-    required this.arenaWidth,
-    required this.arenaHeight,
+    required this.left,
+    required this.top,
+    required this.width,
+    required this.height,
   });
 
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      left: arenaLeft,
-      top: arenaTop,
+      left: left,
+      top: top,
       child: Container(
-        width: arenaWidth,
-        height: arenaHeight,
+        width: width,
+        height: height,
         decoration: BoxDecoration(
           color: Colors.black,
           border: Border.all(color: Constants.matrixGreen, width: 3),

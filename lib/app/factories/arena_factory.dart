@@ -7,26 +7,16 @@ import 'package:re_dice/app/widget/arena/arena_v1.dart';
 
 class ArenaFactory {
   static Widget createArena({
-    required double arenaLeft,
-    required double arenaTop,
-    required double arenaWidth,
-    required double arenaHeight,
+    required double left,
+    required double top,
+    required double width,
+    required double height,
   }) {
     switch (ThemeService.currentTheme) {
       case VisualTheme.modern:
-        return Arena(
-          arenaLeft: arenaLeft,
-          arenaTop: arenaTop,
-          arenaWidth: arenaWidth,
-          arenaHeight: arenaHeight,
-        );
+        return Arena(left: left, top: top, width: width, height: height);
       case VisualTheme.classic:
-        return ArenaV1(
-          arenaLeft: arenaLeft,
-          arenaTop: arenaTop,
-          arenaWidth: arenaWidth,
-          arenaHeight: arenaHeight,
-        );
+        return ArenaV1(left: left, top: top, width: width, height: height);
     }
   }
 }

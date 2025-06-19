@@ -38,7 +38,7 @@ class PreferencesService {
     final mm = now.minute.toString().padLeft(2, '0');
     final ss = now.second.toString().padLeft(2, '0');
     final ms = now.millisecond.toString().padLeft(3, '0');
-    final record = '$hh:$mm:$ss.$ms:  $total  /  $possible';
+    final record = '$hh:$mm:$ss:  $total  /  $possible';
 
     list.add(record);
 
