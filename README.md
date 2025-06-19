@@ -2,7 +2,7 @@
 
 A modern, physics-based dice rolling app built with Flutter. Roll dice with realistic animations, shake detection, and customizable themes.
 
-![ReDice Screenshot](./assets/screenshot.png)
+![ReDice Screenshot](./assets/img.png)
 
 ## ✨ Features
 
