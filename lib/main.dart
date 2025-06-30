@@ -4,7 +4,14 @@ import 'package:re_dice/app/view/home.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await PreferencesService.init();
+  
+  try {
+    await PreferencesService.init();
+  } catch (e) {
+    print('Error initializing preferences: $e');
+    // Continue anyway - the app can work without preferences
+  }
+  
   runApp(const MyApp());
 }
 

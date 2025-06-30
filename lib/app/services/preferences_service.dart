@@ -5,66 +5,112 @@ class PreferencesService {
 
   /// Deve ser chamado antes de usar qualquer método de leitura/escrita
   static Future<void> init() async {
-    _prefs = await SharedPreferences.getInstance();
+    try {
+      _prefs = await SharedPreferences.getInstance();
+    } catch (e) {
+      print('Error initializing SharedPreferences: $e');
+      // On web, sometimes SharedPreferences can fail to initialize
+      _prefs = null;
+    }
   }
 
   static Future<void> saveInt(String key, int value) async {
-    await _prefs?.setInt(key, value);
+    try {
+      await _prefs?.setInt(key, value);
+    } catch (e) {
+      print('Error saving int to preferences: $e');
+    }
   }
 
   static int? getInt(String key) {
-    return _prefs?.getInt(key);
+    try {
+      return _prefs?.getInt(key);
+    } catch (e) {
+      print('Error getting int from preferences: $e');
+      return null;
+    }
   }
 
   static Future<void> saveString(String key, String value) async {
-    await _prefs?.setString(key, value);
+    try {
+      await _prefs?.setString(key, value);
+    } catch (e) {
+      print('Error saving string to preferences: $e');
+    }
   }
 
   static String? getString(String key) {
-    return _prefs?.getString(key);
+    try {
+      return _prefs?.getString(key);
+    } catch (e) {
+      print('Error getting string from preferences: $e');
+      return null;
+    }
   }
 
   static Future<void> remove(String key) async {
-    await _prefs?.remove(key);
+    try {
+      await _prefs?.remove(key);
+    } catch (e) {
+      print('Error removing from preferences: $e');
+    }
   }
 
   static const _rollHistoryKey = 'roll_history';
   static const _diceListKey = 'dice_list';
 
   static Future<void> addRollHistory(int total, int possible) async {
-    final list = _prefs?.getStringList(_rollHistoryKey) ?? <String>[];
-    final now = DateTime.now();
-    final hh = now.hour.toString().padLeft(2, '0');
-    final mm = now.minute.toString().padLeft(2, '0');
-    final ss = now.second.toString().padLeft(2, '0');
-    // final ms = now.millisecond.toString().padLeft(3, '0');
-    final record = '$hh:$mm:$ss:  $total  /  $possible';
+    try {
+      final list = _prefs?.getStringList(_rollHistoryKey) ?? <String>[];
+      final now = DateTime.now();
+      final hh = now.hour.toString().padLeft(2, '0');
+      final mm = now.minute.toString().padLeft(2, '0');
+      final ss = now.second.toString().padLeft(2, '0');
+      // final ms = now.millisecond.toString().padLeft(3, '0');
+      final record = '$hh:$mm:$ss:  $total  /  $possible';
 
-    list.add(record);
+      list.add(record);
 
-    // Manter apenas as últimas 50 jogadas
-    if (list.length > 50) {
-      list.removeAt(0); // Remove a primeira (mais antiga)
+      // Manter apenas as últimas 50 jogadas
+      if (list.length > 50) {
+        list.removeAt(0); // Remove a primeira (mais antiga)
+      }
+
+      await _prefs?.setStringList(_rollHistoryKey, list);
+    } catch (e) {
+      print('Error adding roll history: $e');
     }
-
-    await _prefs?.setStringList(_rollHistoryKey, list);
   }
 
   static List<String> getRollHistory() {
-    return _prefs?.getStringList(_rollHistoryKey) ?? <String>[];
+    try {
+      return _prefs?.getStringList(_rollHistoryKey) ?? <String>[];
+    } catch (e) {
+      print('Error getting roll history: $e');
+      return <String>[];
+    }
   }
 
   static Future<void> saveDiceList(List<Map<String, int>> diceList) async {
-    final List<String> stringList =
-        diceList.map((dice) => '${dice['id']},${dice['sides']}').toList();
-    await _prefs?.setStringList(_diceListKey, stringList);
+    try {
+      final List<String> stringList =
+          diceList.map((dice) => '${dice['id']},${dice['sides']}').toList();
+      await _prefs?.setStringList(_diceListKey, stringList);
+    } catch (e) {
+      print('Error saving dice list: $e');
+    }
   }
 
   static List<Map<String, int>> getDiceList() {
-    final List<String> stringList = _prefs?.getStringList(_diceListKey) ?? [];
-    return stringList.map((diceString) {
-      final parts = diceString.split(',');
-      return {'id': int.parse(parts[0]), 'sides': int.parse(parts[1])};
-    }).toList();
+    try {
+      final List<String> stringList = _prefs?.getStringList(_diceListKey) ?? [];
+      return stringList.map((diceString) {
+        final parts = diceString.split(',');
+        return {'id': int.parse(parts[0]), 'sides': int.parse(parts[1])};
+      }).toList();
+    } catch (e) {
+      print('Error getting dice list: $e');
+      return <Map<String, int>>[];
+    }
   }
 }
