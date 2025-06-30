@@ -28,7 +28,7 @@ jobs:
           flutter pub get
 
       - name: Build
-        run: flutter build web --release --base-href "/re_dice/"
+        run: flutter build web --release --base-href "/re-dice/"
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
