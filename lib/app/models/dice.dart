@@ -20,6 +20,7 @@ extension DiceListExtension on List<Dice> {
       total += dice.roll();
     }
     return total;
+    
   }
 
   Map<int, int> groupByType() {
