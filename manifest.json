@@ -1,7 +1,7 @@
 {
     "name": "re_dice",
     "short_name": "re_dice",
-    "start_url": ".",
+    "start_url": "/re_dice/",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
