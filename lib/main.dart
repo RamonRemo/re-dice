@@ -8,7 +8,7 @@ Future<void> main() async {
   try {
     await PreferencesService.init();
   } catch (e) {
-    print('Error initializing preferences: $e');
+    debugPrint('Error initializing preferences: $e');
     // Continue anyway - the app can work without preferences
   }
   

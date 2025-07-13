@@ -1,3 +1,6 @@
+// ignore_for_file: avoid_debugPrint
+
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferencesService {
@@ -8,7 +11,7 @@ class PreferencesService {
     try {
       _prefs = await SharedPreferences.getInstance();
     } catch (e) {
-      print('Error initializing SharedPreferences: $e');
+      debugPrint('Error initializing SharedPreferences: $e');
       // On web, sometimes SharedPreferences can fail to initialize
       _prefs = null;
     }
@@ -18,7 +21,7 @@ class PreferencesService {
     try {
       await _prefs?.setInt(key, value);
     } catch (e) {
-      print('Error saving int to preferences: $e');
+      debugPrint('Error saving int to preferences: $e');
     }
   }
 
@@ -26,7 +29,7 @@ class PreferencesService {
     try {
       return _prefs?.getInt(key);
     } catch (e) {
-      print('Error getting int from preferences: $e');
+      debugPrint('Error getting int from preferences: $e');
       return null;
     }
   }
@@ -35,7 +38,7 @@ class PreferencesService {
     try {
       await _prefs?.setString(key, value);
     } catch (e) {
-      print('Error saving string to preferences: $e');
+      debugPrint('Error saving string to preferences: $e');
     }
   }
 
@@ -43,7 +46,7 @@ class PreferencesService {
     try {
       return _prefs?.getString(key);
     } catch (e) {
-      print('Error getting string from preferences: $e');
+      debugPrint('Error getting string from preferences: $e');
       return null;
     }
   }
@@ -52,7 +55,7 @@ class PreferencesService {
     try {
       await _prefs?.remove(key);
     } catch (e) {
-      print('Error removing from preferences: $e');
+      debugPrint('Error removing from preferences: $e');
     }
   }
 
@@ -78,7 +81,7 @@ class PreferencesService {
 
       await _prefs?.setStringList(_rollHistoryKey, list);
     } catch (e) {
-      print('Error adding roll history: $e');
+      debugPrint('Error adding roll history: $e');
     }
   }
 
@@ -86,7 +89,7 @@ class PreferencesService {
     try {
       return _prefs?.getStringList(_rollHistoryKey) ?? <String>[];
     } catch (e) {
-      print('Error getting roll history: $e');
+      debugPrint('Error getting roll history: $e');
       return <String>[];
     }
   }
@@ -97,7 +100,7 @@ class PreferencesService {
           diceList.map((dice) => '${dice['id']},${dice['sides']}').toList();
       await _prefs?.setStringList(_diceListKey, stringList);
     } catch (e) {
-      print('Error saving dice list: $e');
+      debugPrint('Error saving dice list: $e');
     }
   }
 
@@ -109,7 +112,7 @@ class PreferencesService {
         return {'id': int.parse(parts[0]), 'sides': int.parse(parts[1])};
       }).toList();
     } catch (e) {
-      print('Error getting dice list: $e');
+      debugPrint('Error getting dice list: $e');
       return <Map<String, int>>[];
     }
   }
