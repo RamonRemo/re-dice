@@ -1,5 +1,7 @@
 # 🎲 ReDice
 
+You can see it running [here](https://ramonremo.github.io/re-dice/)
+
 A modern, physics-based dice rolling app built with Flutter. Roll dice with realistic animations, shake detection, and customizable themes!
 
 ![ReDice Screenshot](./assets/img.png)
