@@ -5620,7 +5620,7 @@ for(s=a.gW(a),r=0,q=0;s.n();){p=J.p(s.gG(s))
 o=((p^p>>>16)>>>0)*569420461>>>0
 o=((o^o>>>15)>>>0)*3545902487>>>0
 r=r+((o^o>>>15)>>>0)&1073741823;++q}return A.ahr(r,q,0)},
-il(a){A.ajM(A.m(a))},
+NU(a){A.ajM(A.m(a))},
 a0U(a,b,c,d){return new A.iw(a,b,c.h("@<0>").aZ(d).h("iw<1,2>"))},
 arH(){$.zN()
 return new A.vI()},
@@ -7137,7 +7137,7 @@ afw(a,b){var s
 if(a.r)return
 s=$.abK
 if(s===0)A.avD(J.dG(a.a),100,a.b)
-else A.NU().$1("Another exception was thrown: "+a.gMr().k(0))
+else A.il().$1("Another exception was thrown: "+a.gMr().k(0))
 $.abK=$.abK+1},
 afv(a){var s,r,q,p,o,n,m,l,k,j,i,h=A.aJ(["dart:async-patch",0,"dart:async",0,"package:stack_trace",0,"class _AssertionError",0,"class _FakeAsync",0,"class _FrameCallbackEntry",0,"class _Timer",0,"class _RawReceivePortImpl",0],t.N,t.S),g=A.arE(J.amE(a,"\n"))
 for(s=0,r=0;q=g.length,r<q;++r){p=g[r]
@@ -7164,11 +7164,11 @@ else k.push(j+" frames from "+B.b.bb(q," ")+")")}return k},
 d1(a){var s=$.iD
 if(s!=null)s.$1(a)},
 avD(a,b,c){var s,r
-A.NU().$1(a)
+A.il().$1(a)
 s=A.c(B.d.tz((c==null?A.acx():A.afu(c)).k(0)).split("\n"),t.s)
 r=s.length
 s=J.aem(r!==0?new A.vw(s,new A.aal(),t.Ws):s,b)
-A.NU().$1(B.b.bb(A.afv(s),"\n"))},
+A.il().$1(B.b.bb(A.afv(s),"\n"))},
 anR(a,b,c){A.anS(b,c)
 return new A.Bl()},
 anS(a,b){if(a==null)return A.c([],t.E)
@@ -19717,7 +19717,7 @@ break
 case 3:q=2
 m=p.pop()
 o=A.ag(m)
-A.il("Error initializing SharedPreferences: "+A.m(o))
+A.il().$1("Error initializing SharedPreferences: "+A.m(o))
 $.ot=null
 s=5
 break
@@ -19750,7 +19750,7 @@ break
 case 3:q=2
 e=p.pop()
 i=A.ag(e)
-A.il("Error adding roll history: "+A.m(i))
+A.il().$1("Error adding roll history: "+A.m(i))
 s=5
 break
 case 2:s=1
@@ -19763,7 +19763,7 @@ try{r=$.ot
 r=r==null?null:r.tU("roll_history")
 if(r==null)r=A.c([],t.s)
 return r}catch(q){s=A.ag(q)
-A.il("Error getting roll history: "+A.m(s))
+A.il().$1("Error getting roll history: "+A.m(s))
 r=A.c([],t.s)
 return r}},
 Yy(a){return A.aqw(a)},
@@ -19783,7 +19783,7 @@ break
 case 3:q=2
 j=p.pop()
 n=A.ag(j)
-A.il("Error saving dice list: "+A.m(n))
+A.il().$1("Error saving dice list: "+A.m(n))
 s=5
 break
 case 2:s=1
@@ -19799,7 +19799,7 @@ q=s
 o=A.Y(q).h("a5<1,aj<o,l>>")
 q=A.Z(new A.a5(q,new A.Yw(),o),o.h("ap.E"))
 return q}catch(n){r=A.ag(n)
-A.il("Error getting dice list: "+A.m(r))
+A.il().$1("Error getting dice list: "+A.m(r))
 q=A.c([],t.xN)
 return q}},
 Yz:function Yz(){},
@@ -19899,7 +19899,7 @@ break
 case 3:q=2
 f=p.pop()
 o=A.ag(f)
-A.il("Error initializing preferences: "+A.m(o))
+A.il().$1("Error initializing preferences: "+A.m(o))
 s=5
 break
 case 2:s=1
@@ -22234,7 +22234,7 @@ A.Pv.prototype={
 $1(a){var s
 if(a instanceof A.mR){A.tb(B.t,null,t.H).bn(new A.Pt(this.b),t.P)
 return}s=this.b
-A.il("Could not get text from clipboard: "+A.m(a))
+A.NU("Could not get text from clipboard: "+A.m(a))
 s.toString
 s.$1(B.J.bd(["paste_fail","Clipboard.getData failed",null]))},
 $S:27}
@@ -22275,7 +22275,7 @@ break
 case 4:p=3
 k=o.pop()
 n=A.ag(k)
-A.il("copy is not successful "+A.m(n))
+A.NU("copy is not successful "+A.m(n))
 m=A.dt(!1,t.y)
 q=m
 s=1
@@ -22317,8 +22317,8 @@ s.focus($.cY())
 s.select()
 r=!1
 try{r=m.document.execCommand("copy")
-if(!r)A.il("copy is not successful")}catch(p){q=A.ag(p)
-A.il("copy is not successful "+A.m(q))}finally{s.remove()}return r}}
+if(!r)A.NU("copy is not successful")}catch(p){q=A.ag(p)
+A.NU("copy is not successful "+A.m(q))}finally{s.remove()}return r}}
 A.RD.prototype={
 ms(a){var s=A.zs(new A.mR("Paste is not implemented for this browser."),null),r=new A.at($.aa,t.fB)
 r.jC(s)
@@ -33317,7 +33317,7 @@ a0_(a,b){if(a==="Google Inc.")return B.bL
 else if(a==="Apple Computer, Inc.")return B.ax
 else if(B.d.p(b,"Edg/"))return B.bL
 else if(a===""&&B.d.p(b,"firefox"))return B.bM
-A.il("WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.")
+A.NU("WARNING: failed to detect current browser engine. Assuming this is a Chromium-compatible browser.")
 return B.bL},
 gc4(){var s,r,q=this,p=q.f
 if(p===$){s=q.a00()
@@ -63535,7 +63535,7 @@ if(a===B.aN){r.a.toString
 s=r.d
 s===$&&A.a()
 s=s.a}else s=!1
-if(s){A.NU().$1("app resumed")
+if(s){A.il().$1("app resumed")
 s=r.d
 s===$&&A.a()
 s.a=!1
@@ -63546,7 +63546,7 @@ if(s!=null)s.hz(0)}if(a===B.dh){r.a.toString
 s=r.d
 s===$&&A.a()
 s=!s.a}else s=!1
-if(s){A.NU().$1("app paused")
+if(s){A.il().$1("app paused")
 s=r.d
 s===$&&A.a()
 s.a=!0
@@ -64874,7 +64874,7 @@ o(i=A.x5.prototype,"gEw","VF",0)
 o(i,"gXO","qf",0)
 o(i,"gXP","XQ",0)
 n(A.yl.prototype,"gVY","VZ",78)
-q(A,"NU",1,null,["$2$wrapWidth","$1"],["ajo",function(a){return A.ajo(a,null)}],335,0)
+q(A,"il",1,null,["$2$wrapWidth","$1"],["ajo",function(a){return A.ajo(a,null)}],335,0)
 p(A,"awm","aiK",0)
 s(A,"l7","aeK",41)
 s(A,"zw","anh",41)
